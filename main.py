@@ -27,14 +27,12 @@ db_manager.initialize_add(chroma_client)
 def main():
     # Dosya Yükleme
     print("Select PDF files to process.")
-    #file_paths = FileUploader.select_files()
-    #file_paths = FileUploader.validate_files(file_paths)
-
-    
+    file_paths = FileUploader.select_files()
+    file_paths = FileUploader.validate_files(file_paths)
 
     ## FileProcessor sınıfını kullanarak dosyaları işle
-    #file_processor = FileProcessor(db_manager, model_name, chroma_collection)
-    #file_processor.process_files(file_paths)
+    file_processor = FileProcessor(db_manager, model_name, chroma_collection)
+    file_processor.process_files(file_paths)
 
     # ChromaDBRetriever sınıfı ile sorgu yap
     query_executor = ChromaDBRetriever(chroma_collection)
@@ -45,12 +43,12 @@ def main():
     result_displayer = ChromaDBResultDisplayer()
     result_displayer.show_results(results, return_only_docs=False)
 
-    prompt = "Why does deep learning perform better with large datasets?"
-
     #Chatbotu oluştur
     chatbot = ChatBot()
-    response = chatbot.generate_answer(prompt=prompt,context=results)
-    print(response)
+    response = chatbot.generate_answer(prompt=query,context=results)
+    generated_response = response.candidates[0].content.parts[0].text
+
+    print("Chatbot response:",generated_response)
 
 if __name__ == "__main__":
     main()

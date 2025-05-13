@@ -6,3 +6,4 @@ tqdm
 IPython
 google-generativeai
 genai
+ollama

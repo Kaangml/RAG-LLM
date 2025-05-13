@@ -1,0 +1,15 @@
+# Python cache dosyaları
+__pycache__/
+*.pyc
+*.pyo
+
+# Sanal ortam klasörü
+.venv/
+
+# ChromaDBData klasörü
+ChromaDBData/
+
+# IDE ve sistem dosyaları
+.vscode/
+.DS_Store
+Thumbs.db
