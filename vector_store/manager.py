@@ -19,7 +19,14 @@ class ChromaDBManager:
         Args:
             chroma_client (object): ChromaDB istemcisi.
         """
+        # Default model name can be provided later; initialize without model by default
         self.add = ChromaDBAdd(chroma_client)
+
+    def initialize_add_with_model(self, chroma_client, model_name: str):
+        """
+        Initialize ChromaDBAdd with a specific embedding model.
+        """
+        self.add = ChromaDBAdd(chroma_client, model_name=model_name)
 
     def check(self, chroma_client, chroma_collection):
         checker = ChromaDBCheck(chroma_client)

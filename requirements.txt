@@ -2,8 +2,10 @@ chromadb
 sentence_transformers
 pypdf
 langchain
+langchain-text-splitters
 tqdm
 IPython
 google-generativeai
-genai
 ollama
+python-dotenv
+pandas

@@ -14,7 +14,7 @@ class ChatBot:
         # Sistem promptunu config'den al
         self.system_instruction = system_instruction or get_system_prompt()
         
-        self.model = genai.GenerativeModel('gemini-1.5-flash-latest', system_instruction=self.system_instruction)
+        self.model = genai.GenerativeModel('gemini-2.5-flash', system_instruction=self.system_instruction)
         self.chat = self.model.start_chat(history=[])
 
     def generate_answer(self, prompt, context):
@@ -26,4 +26,4 @@ class ChatBot:
         """
         Mevcut sohbet geçmişi.
         """
-        return self.history
+        return self.chat.history

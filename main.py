@@ -8,7 +8,7 @@ from chatbot.chatbot import ChatBot
 # Ayarlar
 chromaDB_path = "./ChromaDBData"
 collection_name = "Papers"
-model_name = "distiluse-base-multilingual-cased-v1"
+model_name = "all-mpnet-base-v2"
 
 # ChromaDB Yöneticisi
 db_manager = ChromaDBManager(chromaDB_path)
@@ -20,23 +20,27 @@ db_manager.delete.delete_all_files_and_folders()
 chroma_client, chroma_collection = db_manager.create.create_client_and_collection(
     collection_name, model_name)
 
-# ChromaDBAdd başlat
-db_manager.initialize_add(chroma_client)
+# ChromaDBAdd başlat (model ile)
+db_manager.initialize_add_with_model(chroma_client, model_name)
 
 # Dosya Yükleme ve İşleme için FileProcessor sınıfı
 def main():
-    # Dosya Yükleme
-    print("Select PDF files to process.")
-    file_paths = FileUploader.select_files()
+    # Dosya Yükleme - PDF veya CSV dosyaları seçebilirsiniz
+    print("Select files to process (PDF or CSV).")
+    file_paths = FileUploader.select_files(file_types="all")  # "all", "pdf", veya "csv"
     file_paths = FileUploader.validate_files(file_paths)
-
-    ## FileProcessor sınıfını kullanarak dosyaları işle
-    file_processor = FileProcessor(db_manager, model_name, chroma_collection)
-    file_processor.process_files(file_paths)
+    
+    if not file_paths:
+        print("No files selected. Skipping file processing.")
+    else:
+        print(f"\n{len(file_paths)} file(s) selected for processing.")
+        ## FileProcessor sınıfını kullanarak dosyaları işle
+        file_processor = FileProcessor(db_manager, model_name, chroma_collection)
+        file_processor.process_files(file_paths)
 
     # ChromaDBRetriever sınıfı ile sorgu yap
     query_executor = ChromaDBRetriever(chroma_collection)
-    query = "Why does deep learning perform better with large datasets?"
+    query = "Nvidia is a fraud ?"
     results = query_executor.retrieve_docs(query, n_results=5)
     
     # ChromaDBResultDisplayer ile sonuçları ekrana yazdır
